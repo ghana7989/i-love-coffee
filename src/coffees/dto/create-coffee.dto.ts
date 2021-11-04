@@ -1,4 +1,5 @@
 export class CreateCoffeeDto {
-  name: string;
-  description: string;
+  readonly name: string;
+  readonly brand: string;
+  readonly flavors: string[];
 }

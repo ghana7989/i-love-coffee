@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Coffee } from './entities/cofee.entity';
+import { CreateCoffeeDto } from './dto/create-coffee.dto';
+import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { Coffee } from './entities/coffee.entity';
 
 @Injectable()
 export class CoffeesService {
@@ -8,7 +10,7 @@ export class CoffeesService {
       id: 1,
       name: 'Cappuccino',
       brand: 'Starbucks',
-      flavor: ['vanilla', 'caramel', 'chocolate'],
+      flavors: ['vanilla', 'caramel', 'chocolate'],
     },
   ];
   findAll(): Coffee[] {
@@ -17,15 +19,21 @@ export class CoffeesService {
   findOne(id: string): Coffee {
     return this.coffees.find((coffee) => coffee.id === +id);
   }
-  create(createCoffeeDTO: any) {
-    this.coffees.push(createCoffeeDTO);
+  create(createCoffeeDTO: CreateCoffeeDto) {
+    const newCoffee = {
+      id: this.coffees.length + 1,
+      name: createCoffeeDTO.name,
+      brand: createCoffeeDTO.brand,
+      flavors: createCoffeeDTO.flavors,
+    };
+    this.coffees.push(newCoffee);
   }
-  update(id: string, updateCoffeeDTO: any) {
+  update(id: string, updateCoffeeDTO: UpdateCoffeeDto) {
     const existingCoffee = this.findOne(id);
     if (existingCoffee) {
       existingCoffee.name = updateCoffeeDTO.name;
       existingCoffee.brand = updateCoffeeDTO.brand;
-      existingCoffee.flavor = updateCoffeeDTO.flavor;
+      existingCoffee.flavors = updateCoffeeDTO.flavors;
     }
   }
   remove(id: string) {
